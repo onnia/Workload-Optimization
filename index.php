@@ -115,43 +115,93 @@ $numcalls = 0; $m = array(); $pickedItems = array();
  
 ## Solve
 list ($m4,$pickedItems) = knapSolveFast2($w4, $v4, sizeof($v4) -1, $time,$m,$pickedItems);
- 
-# Input values
-echo "<b>KALAAAA:</b>";
-echo "<b>Alkuperäinen data:</b>";
-echo "<form <input type='submit' value='Submit'>";
-echo "<table border cellspacing=0>";
-echo "<tr><td>Item</td><td>OP</td><td>Time</td></tr>";
-
-foreach($courses as $key) {
-echo "<tr><td><input name='name' type='text' value='".$key[name]."' /></td><td><input name='op'  type='text' value='".$key[op]."' /></td><td><input name='time' type='text' value='".$key['wload']."' /></td></tr>";
-}
-
-echo "</table>";
-echo "<br>";
-
-echo "<input type='submit' value='Submit'>";
-echo "</form><hr>";
+ ?>
 
 
-// TODO: Solve how to get all params from url
-foreach($_GET as $key => $value){
-  echo $key . " : " . $value . "<br />\r\n";
-}
 
-//Correct anwser
- 
-echo "<b>Valitut kurssit:</b><br>";
-echo "<table border cellspacing=0>";
-echo "<tr><td>Kurssi</td><td>OP</td><td>Time</td></tr>";
-$totalVal = $totalWt = 0;
-foreach($pickedItems as $key) {
-	$totalVal += $v4[$key];
-	$totalWt += $w4[$key];
-	echo "<tr><td>".$items4[$key]."</td><td>".$v4[$key]."</td><td>".$w4[$key]."</td></tr>";
-}
-echo "<tr><td align=right><b>Yhteensä</b></td><td>$totalVal</td><td>$totalWt</td></tr>";
-echo "</table><hr>";
-			
-			
-?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>My work load</title>
+
+  <!-- Bootstrap -->
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="http://getbootstrap.com/examples/sticky-footer/sticky-footer.css">
+
+  <!-- Latest compiled and minified JavaScript -->
+  <!-- <script src="js/jquery-2.1.4.min.js"></script> -->
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="js/jquery.cookie.js" type="text/javascript"></script>
+</head>
+<body>
+<!-- Begin page content -->
+<div class="container">
+  <div class="page-header">
+    <h1>My Work load optimator</h1>
+  </div>
+
+  <?php
+  # Input values
+  echo "<b>Alkuperäinen data:</b>";
+  echo "<form <input type='submit' value='Submit'>";
+  echo "<table border cellspacing=0>";
+  echo "<tr><td>Item</td><td>OP</td><td>Time</td></tr>";
+
+  foreach($courses as $key) {
+    echo "<tr><td><input name='name' type='text' value='".$key[name]."' /></td><td><input name='op'  type='text' value='".$key[op]."' /></td><td><input name='time' type='text' value='".$key['wload']."' /></td></tr>";
+  }
+
+  echo "</table>";
+  echo "<br>";
+
+  echo "<input type='submit' value='Submit'>";
+  echo "</form><hr>";
+
+  // TODO: Solve how to get all params from url
+  foreach($_GET as $key => $value){
+    echo $key . " : " . $value . "<br />\r\n";
+  }
+
+  //Correct anwser
+  echo "<b>Valitut kurssit:</b><br>";
+  echo "<table border cellspacing=0>";
+  echo "<tr><td>Kurssi</td><td>OP</td><td>Time</td></tr>";
+  $totalVal = $totalWt = 0;
+  foreach($pickedItems as $key) {
+    $totalVal += $v4[$key];
+    $totalWt += $w4[$key];
+    echo "<tr><td>".$items4[$key]."</td><td>".$v4[$key]."</td><td>".$w4[$key]."</td></tr>";
+  }
+  echo "<tr><td align=right><b>Yhteensä</b></td><td>$totalVal</td><td>$totalWt</td></tr>";
+  echo "</table><hr>";
+
+  ?>
+
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p class="text-muted">My work load optimator</p>
+  </div>
+</footer>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>-->
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+<script src="custom.js"></script>
+</body>
+
+</body>
+</html>
