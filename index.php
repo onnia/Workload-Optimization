@@ -73,9 +73,7 @@ function knapSolveFast2($w, $v, $i, $aW, &$m, &$pickedItems) {
 	}
 }
 
-if (!isset($_SESSION['courses'])){
-// Unset all of the session variables.
-// orginal data
+/* Default values*/
 $courses = array(
 				array("name"=>"Projekti", "op"=>"20" , "wload"=>"200"),
 				array("name"=>"Algoritmit", "op"=>"2" , "wload"=>"40"),
@@ -83,14 +81,23 @@ $courses = array(
 				array("name"=>"Keikka", "op"=>"1" , "wload"=>"10"),
 				array("name"=>"Ohjelmointi", "op"=>"9" , "wload"=>"90"),
 				array("name"=>"Lopputyö", "op"=>"17" , "wload"=>"100"),
-			);
+			);	
+
+//var_dump($_POST);			
 			
-			$_SESSION = $courses;
-}
 
-//var_dump($_SESSION);
+/* RESET CASE */
+$resetmsg = '';
+ if($_GET['reset'] == "TRUE"){
+	$_SESSION['courses'] = $courses;
+	
+	$resetmsg = 'Form has been reset!';
+ }
 
- $courses = $_SESSION; 
+ if (!isset($_SESSION['courses'])){
+// Unset all of the session variables.
+	$_SESSION['courses'] = $courses;
+} 
 
  for($i = 0; $i < count($courses); $i++) { 
 	$items4[] = $courses[$i]['name']; 
@@ -153,25 +160,45 @@ list ($m4,$pickedItems) = knapSolveFast2($w4, $v4, sizeof($v4) -1, $time,$m,$pic
   <?php
   # Input values
   echo "<b>Alkuperäinen data:</b>";
-  echo "<form <input type='submit' value='Submit'>";
+  echo "<form method='GET' action='index.php'>";
   echo "<table border cellspacing=0>";
-  echo "<tr><td>Item</td><td>OP</td><td>Time</td></tr>";
+  echo "<tr><td>I/0</td><td>Item</td><td>OP</td><td>Time</td></tr>";
 
   foreach($courses as $key) {
-    echo "<tr><td><input name='name' type='text' value='".$key[name]."' /></td><td><input name='op'  type='text' value='".$key[op]."' /></td><td><input name='time' type='text' value='".$key['wload']."' /></td></tr>";
+    echo "<tr><td><input type='checkbox' checked='checked' name='enabled[]' id=''></td><td><input name='name[]' type='text' value='".$key[name]."' /></td><td><input name='op[]'  type='number' value='".$key[op]."' /></td><td><input name='time[]' type='number' value='".$key['wload']."' /></td></tr>";
   }
-
   echo "</table>";
+  echo "<button id='add-row' type='button'>Add row</button>";
+  echo "<a href='?reset=TRUE'>RESET</a>";
   echo "<br>";
-
-  echo "<input type='submit' value='Submit'>";
+  echo "<br>";
+  echo "<input type='submit' value='Optimoi'>";
   echo "</form><hr>";
 
   // TODO: Solve how to get all params from url
-  foreach($_GET as $key => $value){
+  
+ // var_dump($_GET);
+  
+ // var_dump($_GET);
+  echo '<br>';
+  
+  
+  // TODO Import every key as array and push it to optimator function
+  echo 'Submitted values<br />';
+  foreach($_GET as $key => $value){ 
+	$value = implode(", ",$value);
     echo $key . " : " . $value . "<br />\r\n";
   }
 
+  /* ERROR handling*/
+  if(!empty($resetmsg)){
+	  echo '</br>';
+	  echo $resetmsg;
+	  echo '</br>';
+  }
+  
+  
+  if(isset($_SESSION['courses'])){
   //Correct anwser
   echo "<b>Valitut kurssit:</b><br>";
   echo "<table border cellspacing=0>";
@@ -184,6 +211,7 @@ list ($m4,$pickedItems) = knapSolveFast2($w4, $v4, sizeof($v4) -1, $time,$m,$pic
   }
   echo "<tr><td align=right><b>Yhteensä</b></td><td>$totalVal</td><td>$totalWt</td></tr>";
   echo "</table><hr>";
+  }
 
   ?>
 
