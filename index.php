@@ -177,6 +177,7 @@ list ($m4,$pickedItems) = knapSolveFast2($w4, $v4, sizeof($v4) -1, $time,$m,$pic
             </td></tr>";
   }
   echo "</table>";
+  echo "<input class='' name='time' type='number' value='".$time."' />";
   echo "<button id='add-row' onclick='addrow();' type='button'>Add row</button>";
   echo "<a href='?reset=TRUE'>RESET</a>";
   echo "<br>";
@@ -184,7 +185,7 @@ list ($m4,$pickedItems) = knapSolveFast2($w4, $v4, sizeof($v4) -1, $time,$m,$pic
   echo "<input type='submit' value='Optimoi'>";
   echo "</form><hr>";
 
-  // TODO: Solve how to get all params from url
+  // TODO: GET TIME params to dynamic
   
  // var_dump($_GET);
   
