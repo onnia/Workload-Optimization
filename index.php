@@ -160,15 +160,24 @@ list ($m4,$pickedItems) = knapSolveFast2($w4, $v4, sizeof($v4) -1, $time,$m,$pic
   <?php
   # Input values
   echo "<b>Alkuperäinen data:</b>";
-  echo "<form method='GET' action='index.php'>";
-  echo "<table border cellspacing=0>";
+  echo "<form id='myform' method='GET' action='index.php'>";
+  echo "<table id='mytable' border cellspacing=0>";
   echo "<tr><td>I/0</td><td>Item</td><td>OP</td><td>Time</td></tr>";
 
+
+  // Counter
+  $i = 0;
   foreach($courses as $key) {
-    echo "<tr><td><input type='checkbox' checked='checked' name='enabled[]' id=''></td><td><input name='name[]' type='text' value='".$key[name]."' /></td><td><input name='op[]'  type='number' value='".$key[op]."' /></td><td><input name='time[]' type='number' value='".$key['wload']."' /></td></tr>";
+    $i++;
+
+    echo "<tr><td><input class='row-". $i ."' type='checkbox' checked='checked' name='enabled[]' id=''></td>
+            <td><input class='field row-". $i ."' name='name[]' type='text' value='".$key['name']."' /></td>
+            <td><input class='field row-". $i ."' name='op[]'  type='number' value='".$key['op']."' /></td>
+            <td><input class='field row-". $i ."' name='time[]' type='number' value='".$key['wload']."' />
+            </td></tr>";
   }
   echo "</table>";
-  echo "<button id='add-row' type='button'>Add row</button>";
+  echo "<button id='add-row' onclick='addrow();' type='button'>Add row</button>";
   echo "<a href='?reset=TRUE'>RESET</a>";
   echo "<br>";
   echo "<br>";
@@ -220,7 +229,7 @@ list ($m4,$pickedItems) = knapSolveFast2($w4, $v4, sizeof($v4) -1, $time,$m,$pic
 
 <footer class="footer">
   <div class="container">
-    <p class="text-muted">My work load optimator</p>
+    <p class="text-muted">My work load optimator project. Source availble at <a href="https://github.com/onnia/Workload-Optimization" target="_blank" >Github</a>.</p>
   </div>
 </footer>
 
