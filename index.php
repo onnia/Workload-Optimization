@@ -154,11 +154,11 @@ list ($m4,$pickedItems) = knapSolveFast2($w4, $v4, sizeof($v4) -1, $time,$m,$pic
   # Input values
   echo "<b>Alkuperäinen data:</b>";
   echo "<form <input type='submit' value='Submit'>";
-  echo "<table border cellspacing=0>";
+  echo "<table id='example' border cellspacing=0>";
   echo "<tr><td>Item</td><td>OP</td><td>Time</td></tr>";
 
   foreach($courses as $key) {
-    echo "<tr><td><input name='name' type='text' value='".$key[name]."' /></td><td><input name='op'  type='text' value='".$key[op]."' /></td><td><input name='time' type='text' value='".$key['wload']."' /></td></tr>";
+    echo "<tr><td><input name='name' type='text' value='".$key['name']."' /></td><td><input name='op'  type='text' value='".$key['op']."' /></td><td><input name='time' type='text' value='".$key['wload']."' /></td></tr>";
   }
 
   echo "</table>";
@@ -200,6 +200,8 @@ list ($m4,$pickedItems) = knapSolveFast2($w4, $v4, sizeof($v4) -1, $time,$m,$pic
 <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>-->
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="js/bootstrap.min.js"></script>
+
+<script src="https://cdn.datatables.net/1.10.10/js/dataTables.bootstrap.min.js"></script>
 <script src="js/custom.js"></script>
 </body>
 
