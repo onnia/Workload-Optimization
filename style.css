@@ -1,1 +1,6 @@
 /* Styles for the project */
+
+/* if disabled */
+.disabled{
+    background: lightgrey;
+}
