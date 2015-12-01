@@ -154,7 +154,7 @@ for($i = 0; $i < count($courses); $i++) {
   echo "<span>Time limit:</span>";
   echo "<input class='' name='limit' type='number' value='".$time."' />";
   echo "<button id='add-row' onclick='addrow();' type='button'>Add row</button>";
-  echo "<a href='?reset=TRUE'>RESET</a>";
+  echo "<a href='index.php'>RESET</a>";
   echo "<br>";
   echo "<br>";
   echo "<input type='submit' value='Optimoi'>";
