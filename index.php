@@ -1,6 +1,6 @@
 <?php session_start();
-						
-			#########################################################
+
+#########################################################
 # 0-1 Knapsack Problem Solve with memoization optimize and index returns
 # $w = weight of item
 # $v = value of item
@@ -15,138 +15,113 @@
 #########################################################
 
 function knapSolveFast2($w, $v, $i, $aW, &$m, &$pickedItems) {
- 
-	global $numcalls;
-	$numcalls ++;
-	// echo "Called with i=$i, aW=$aW<br>";
- 
-	// Return memo if we have one
-	if (isset($m[$i][$aW])) {
-		return array( $m[$i][$aW], $m['picked'][$i][$aW] );
-	} else {
- 
-		// At end of decision branch
-		if ($i == 0) {
-			if ($w[$i] <= $aW) { // Will this item fit?
-				$m[$i][$aW] = $v[$i]; // Memo this item
-				$m['picked'][$i][$aW] = array($i); // and the picked item
-				return array($v[$i],array($i)); // Return the value of this item and add it to the picked list
- 
-			} else {
-				// Won't fit
-				$m[$i][$aW] = 0; // Memo zero
-				$m['picked'][$i][$aW] = array(); // and a blank array entry...
-				return array(0,array()); // Return nothing
-			}
-		}	
- 
-		// Not at end of decision branch..
-		// Get the result of the next branch (without this one)
-		list ($without_i,$without_PI) = knapSolveFast2($w, $v, $i-1, $aW,$m,$pickedItems);
- 
-		if ($w[$i] > $aW) { // Does it return too many?
- 
-			$m[$i][$aW] = $without_i; // Memo without including this one
-			$m['picked'][$i][$aW] = array(); // and a blank array entry...
-			return array($without_i,array()); // and return it
- 
-		} else {
- 
-			// Get the result of the next branch (WITH this one picked, so available weight is reduced)
-			list ($with_i,$with_PI) = knapSolveFast2($w, $v, ($i-1), ($aW - $w[$i]),$m,$pickedItems);
-			$with_i += $v[$i];  // ..and add the value of this one..
- 
-			// Get the greater of WITH or WITHOUT
-			if ($with_i > $without_i) {
-				$res = $with_i;
-				$picked = $with_PI;
-				array_push($picked,$i);
-			} else {
-				$res = $without_i;
-				$picked = $without_PI;
-			}
- 
-			$m[$i][$aW] = $res; // Store it in the memo
-			$m['picked'][$i][$aW] = $picked; // and store the picked item
-			return array ($res,$picked); // and then return it
-		}	
-	}
+
+  global $numcalls;
+  $numcalls ++;
+  // echo "Called with i=$i, aW=$aW<br>";
+
+  // Return memo if we have one
+  if (isset($m[$i][$aW])) {
+    return array( $m[$i][$aW], $m['picked'][$i][$aW] );
+  } else {
+
+    // At end of decision branch
+    if ($i == 0) {
+      if ($w[$i] <= $aW) { // Will this item fit?
+        $m[$i][$aW] = $v[$i]; // Memo this item
+        $m['picked'][$i][$aW] = array($i); // and the picked item
+        return array($v[$i],array($i)); // Return the value of this item and add it to the picked list
+
+      } else {
+        // Won't fit
+        $m[$i][$aW] = 0; // Memo zero
+        $m['picked'][$i][$aW] = array(); // and a blank array entry...
+        return array(0,array()); // Return nothing
+      }
+    }
+
+    // Not at end of decision branch..
+    // Get the result of the next branch (without this one)
+    list ($without_i,$without_PI) = knapSolveFast2($w, $v, $i-1, $aW,$m,$pickedItems);
+
+    if ($w[$i] > $aW) { // Does it return too many?
+
+      $m[$i][$aW] = $without_i; // Memo without including this one
+      $m['picked'][$i][$aW] = array(); // and a blank array entry...
+      return array($without_i,array()); // and return it
+
+    } else {
+
+      // Get the result of the next branch (WITH this one picked, so available weight is reduced)
+      list ($with_i,$with_PI) = knapSolveFast2($w, $v, ($i-1), ($aW - $w[$i]),$m,$pickedItems);
+      $with_i += $v[$i];  // ..and add the value of this one..
+
+      // Get the greater of WITH or WITHOUT
+      if ($with_i > $without_i) {
+        $res = $with_i;
+        $picked = $with_PI;
+        array_push($picked,$i);
+      } else {
+        $res = $without_i;
+        $picked = $without_PI;
+      }
+
+      $m[$i][$aW] = $res; // Store it in the memo
+      $m['picked'][$i][$aW] = $picked; // and store the picked item
+      return array ($res,$picked); // and then return it
+    }
+  }
 }
 
 /* Default values*/
 $courses = array(
-				array("name"=>"Projekti", "op"=>"20" , "wload"=>"200"),
-				array("name"=>"Algoritmit", "op"=>"2" , "wload"=>"40"),
-				array("name"=>"Videot", "op"=>"5" , "wload"=>"20"),
-				array("name"=>"Keikka", "op"=>"1" , "wload"=>"10"),
-				array("name"=>"Ohjelmointi", "op"=>"9" , "wload"=>"90"),
-				array("name"=>"Lopputyö", "op"=>"17" , "wload"=>"100"),
-			);	
-
-//var_dump($_POST);			
-			
+  array("name"=>"Projekti", "op"=>"20" , "wload"=>"200"),
+  array("name"=>"Algoritmit", "op"=>"2" , "wload"=>"40"),
+  array("name"=>"Videot", "op"=>"5" , "wload"=>"20"),
+  array("name"=>"Keikka", "op"=>"1" , "wload"=>"10"),
+  array("name"=>"Ohjelmointi", "op"=>"9" , "wload"=>"90"),
+  array("name"=>"Lopputyö", "op"=>"17" , "wload"=>"100"),
+);
 
 /* RESET CASE */
+
+// TODO Fix reset function
 $resetmsg = '';
- if($_GET['reset'] == "TRUE"){
-	$_SESSION['courses'] = $courses;
-	
-	$resetmsg = 'Form has been reset!';
- }
+if($_GET['reset'] == "TRUE"){
+  $_GET = $courses;
+  $resetmsg = 'Form has been reset!';
+}
 
- if (!isset($_SESSION['courses'])){
+if (!isset($_GET)){
 // Unset all of the session variables.
-	$_SESSION['courses'] = $courses;
-} 
+  $_GET = $courses;
+}
+// time amout
+$time = 200;
 
- for($i = 0; $i < count($courses); $i++) { 
-	$items4[] = $courses[$i]['name']; 
-	$v4[] = $courses[$i]['op']; 
-	$w4[] = $courses[$i]['wload']; 
- }
-// time amout 
-$time = 200; 
-//$items4 = array("Projekti","Algoritmit","Videot","Keikka","Ohjelmointi", "Lopputyö");
-//$w4 = array(200,40,20,10,90,100);
-//$v4 = array(20,2,5,1,9,17);
- 
-## Initialize
-$numcalls = 0; $m = array(); $pickedItems = array();
- 
-# Funtion arguments
-# $w = weight of item
-# $v = value of item
-# $i = index
-# $aW = Available Weight
-# $m = Memo items array
- 
-## Solve
-list ($m4,$pickedItems) = knapSolveFast2($w4, $v4, sizeof($v4) -1, $time,$m,$pickedItems);
- ?>
+
+// Transform the array to list of arrays
+for($i = 0; $i < count($courses); $i++) {
+  $items4[] = $courses[$i]['name'];
+  $v4[] = $courses[$i]['op'];
+  $w4[] = $courses[$i]['wload'];
+  $time[] = $courses[$i]['limit'];
+}
 
 
 
-
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
   <title>My work load</title>
-
-  <!-- Bootstrap -->
-  <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="style.css">
-  <!-- Optional theme -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-  <!-- Optional theme -->
   <link rel="stylesheet" href="http://getbootstrap.com/examples/sticky-footer/sticky-footer.css">
-
-  <!-- Latest compiled and minified JavaScript -->
-  <!-- <script src="js/jquery-2.1.4.min.js"></script> -->
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script src="js/jquery.cookie.js" type="text/javascript"></script>
 </head>
@@ -164,12 +139,11 @@ list ($m4,$pickedItems) = knapSolveFast2($w4, $v4, sizeof($v4) -1, $time,$m,$pic
   echo "<table id='mytable' border cellspacing=0>";
   echo "<tr><td>I/0</td><td>Item</td><td>OP</td><td>Time</td></tr>";
 
-
   // Counter
   $i = 0;
   foreach($courses as $key) {
     $i++;
-
+    // Print  results
     echo "<tr><td><input class='row-". $i ."' type='checkbox' checked='checked' name='enabled[]' id=''></td>
             <td><input class='field row-". $i ."' name='name[]' type='text' value='".$key['name']."' /></td>
             <td><input class='field row-". $i ."' name='op[]'  type='number' value='".$key['op']."' /></td>
@@ -177,55 +151,72 @@ list ($m4,$pickedItems) = knapSolveFast2($w4, $v4, sizeof($v4) -1, $time,$m,$pic
             </td></tr>";
   }
   echo "</table>";
-  echo "<input class='' name='time' type='number' value='".$time."' />";
+  echo "<span>Time limit:</span>";
+  echo "<input class='' name='limit' type='number' value='".$time."' />";
   echo "<button id='add-row' onclick='addrow();' type='button'>Add row</button>";
   echo "<a href='?reset=TRUE'>RESET</a>";
   echo "<br>";
   echo "<br>";
   echo "<input type='submit' value='Optimoi'>";
   echo "</form><hr>";
+  echo '<br>';
 
   // TODO: GET TIME params to dynamic
-  
- // var_dump($_GET);
-  
- // var_dump($_GET);
-  echo '<br>';
-  
-  
-  // TODO Import every key as array and push it to optimator function
-  echo 'Submitted values<br />';
-  foreach($_GET as $key => $value){ 
-	$value = implode(", ",$value);
-    echo $key . " : " . $value . "<br />\r\n";
-  }
 
-  /* ERROR handling*/
-  if(!empty($resetmsg)){
-	  echo '</br>';
-	  echo $resetmsg;
-	  echo '</br>';
-  }
-  
-  
-  if(isset($_SESSION['courses'])){
-  //Correct anwser
-  echo "<b>Valitut kurssit:</b><br>";
-  echo "<table border cellspacing=0>";
-  echo "<tr><td>Kurssi</td><td>OP</td><td>Time</td></tr>";
-  $totalVal = $totalWt = 0;
-  foreach($pickedItems as $key) {
-    $totalVal += $v4[$key];
-    $totalWt += $w4[$key];
-    echo "<tr><td>".$items4[$key]."</td><td>".$v4[$key]."</td><td>".$w4[$key]."</td></tr>";
-  }
-  echo "<tr><td align=right><b>Yhteensä</b></td><td>$totalVal</td><td>$totalWt</td></tr>";
-  echo "</table><hr>";
+  //If values are summitted
+  if (!empty($_GET)){
+    // TODO Import every key as array and push it to optimator function
+    echo 'Submitted values<br />';
+    foreach($_GET as $key => $value){
+      $value = implode(", ",$value);
+      //   var_dump($key);
+      echo $key . " : " . $value . "<br />\r\n";
+    }
+    echo $_GET['limit'];
+    echo '<br>';
+
+    /* ERROR handling*/
+    if(!empty($resetmsg)){
+      echo '</br>';
+      echo $resetmsg;
+      echo '</br>';
+    }
+
+    # Funtion arguments
+    # $w = weight of item (time)
+    $w4 = $_GET['time'];
+    # $v = value of item (op)
+    $v4 = $_GET['op'];
+    # $i = index
+    $i = sizeof($v4);
+    # $aW = Available Weight
+    $aW = $_GET['limit'];
+    ## Initialize $m = Memo items array
+    $numcalls = 0; $m = array(); $pickedItems = array();
+
+    ## Solve
+    list ($m4,$pickedItems) = knapSolveFast2($w4, $v4, $i -1, $aW,$m,$pickedItems);
+
+
+    if(isset($pickedItems)){
+      //Correct anwser
+      echo "<b>Valitut kurssit:</b><br>";
+      echo "<table border cellspacing=0>";
+      echo "<tr><td>Kurssi</td><td>OP</td><td>Time</td></tr>";
+      $totalVal = $totalWt = 0;
+      foreach($pickedItems as $key) {
+        $totalVal += $v4[$key];
+        $totalWt += $w4[$key];
+        echo "<tr><td>".$items4[$key]."</td><td>".$v4[$key]."</td><td>".$w4[$key]."</td></tr>";
+      }
+      echo "<tr><td align=right><b>Yhteensä</b></td><td>$totalVal</td><td>$totalWt</td></tr>";
+      echo "</table><hr>";
+    }
   }
 
   ?>
 
-  </div>
+</div>
 </div>
 
 <footer class="footer">
