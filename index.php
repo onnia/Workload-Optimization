@@ -124,8 +124,8 @@ for($i = 0; $i < count($courses); $i++) {
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>My work load</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="http://getbootstrap.com/examples/sticky-footer/sticky-footer.css">
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
@@ -135,6 +135,11 @@ for($i = 0; $i < count($courses); $i++) {
   <div class="page-header">
     <h1>My Work load optimator</h1>
   </div>
+
+
+  <p>This application is used to solve the knapsack problem and create a UI for it. The source for the function is copied from here: <a target="_blank" href="http://rosettacode.org/wiki/Knapsack_problem/0-1">http://rosettacode.org/wiki/Knapsack_problem/0-1</a></p>
+  <p>I/0 Selects if you want include the row to the results array. Rest of the fields are editable.</p>
+  <p>Enjoy your clicking!</p>
 
   <?php
   echo "<b>Initial infomation:</b>";
@@ -174,7 +179,7 @@ for($i = 0; $i < count($courses); $i++) {
   //values are submitted
   if (!empty($_GET)){
 
-    # Funtion arguments
+    # Function arguments
     # $w = weight of item (time)
     $w4 = $_GET['time'];
     # $v = value of item (op)
@@ -190,8 +195,8 @@ for($i = 0; $i < count($courses); $i++) {
     list ($m4,$pickedItems) = knapSolveFast2($w4, $v4, $i -1, $aW,$m,$pickedItems);
 
     if(isset($pickedItems)){
-      //Correct anwser
-      echo "<b>Selected Courses:</b><br>";
+      //Correct answer
+      echo "<b>Optimized Courses selection:</b><br>";
       echo "<table id='results'>";
       echo "<tr><th>Course</th><th>Credits</th><th>Time</th></tr>";
       $totalVal = $totalWt = 0;
@@ -209,7 +214,7 @@ for($i = 0; $i < count($courses); $i++) {
 
 <footer class="footer">
   <div class="container">
-    <p class="text-muted">My work load optimator project. Source availble at <a href="https://github.com/onnia/Workload-Optimization" target="_blank" >Github</a>.</p>
+    <p class="text-muted">My work load optimator project by Onni Aaltonen. Source availble at <a href="https://github.com/onnia/Workload-Optimization" target="_blank" >Github</a>.</p>
   </div>
 </footer>
 <script src="js/custom.js"></script>
