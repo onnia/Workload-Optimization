@@ -98,7 +98,6 @@ if (!($_GET['enabled'][0] == NULL)) {
     $getvalue[] = array("name"=>$_GET['name'][$i], "op"=>$_GET['op'][$i] , "wload"=>$_GET['time'][$i]);
     $i++;
   }
-
   /* Override default values*/
   $courses = $getvalue;
 
@@ -108,13 +107,11 @@ if (!($_GET['enabled'][0] == NULL)) {
   /* Hide reset message */
   $resetmsg = '';
 }
-
 // Transform the array to list of arrays
 for($i = 0; $i < count($courses); $i++) {
   $items4[] = $courses[$i]['name'];
   $v4[] = $courses[$i]['op'];
   $w4[] = $courses[$i]['wload'];
-  // $time[] = $courses[$i]['limit'];
 }
 ?>
 <!DOCTYPE html>
