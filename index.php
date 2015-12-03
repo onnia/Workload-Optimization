@@ -1,4 +1,4 @@
-<?php session_start();
+<?php
 
 #########################################################
 # 0-1 Knapsack Problem Solve with memoization optimize and index returns
@@ -73,7 +73,7 @@ function knapSolveFast2($w, $v, $i, $aW, &$m, &$pickedItems) {
   }
 }
 
-/* Default values*/
+// Default values
 $courses = array(
   array("name"=>"Projekti", "op"=>"20" , "wload"=>"200"),
   array("name"=>"Algoritmit", "op"=>"2" , "wload"=>"40"),
@@ -83,33 +83,39 @@ $courses = array(
   array("name"=>"Lopputyö", "op"=>"17" , "wload"=>"100"),
 );
 
-/* RESET CASE */
-
-// TODO Fix reset function
-$resetmsg = '';
-if($_GET['reset'] == "TRUE"){
-  $_GET = $courses;
-  $resetmsg = 'Form has been reset!';
-}
-
-if (!isset($_GET)){
-// Unset all of the session variables.
-  $_GET = $courses;
-}
-// time amout
+// Default amount
 $time = 200;
 
+// Reset message
+$resetmsg = '<p style="float: right;">Form has defaut values!</p>';
+
+if (!($_GET['enabled'][0] == NULL)) {
+  // Get depth of array
+  $e = array_keys($_GET['name']);
+  $getvalue = array();
+  $i = 0;
+  foreach ($e as $key) {
+    $getvalue[] = array("name"=>$_GET['name'][$i], "op"=>$_GET['op'][$i] , "wload"=>$_GET['time'][$i]);
+    $i++;
+  }
+
+  /* Override default values*/
+  $courses = $getvalue;
+
+  /* Get the limit */
+  $time = $_GET['limit'][0];
+
+  /* Hide reset message */
+  $resetmsg = '';
+}
 
 // Transform the array to list of arrays
 for($i = 0; $i < count($courses); $i++) {
   $items4[] = $courses[$i]['name'];
   $v4[] = $courses[$i]['op'];
   $w4[] = $courses[$i]['wload'];
-  $time[] = $courses[$i]['limit'];
+  // $time[] = $courses[$i]['limit'];
 }
-
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -123,7 +129,6 @@ for($i = 0; $i < count($courses); $i++) {
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
   <link rel="stylesheet" href="http://getbootstrap.com/examples/sticky-footer/sticky-footer.css">
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script src="js/jquery.cookie.js" type="text/javascript"></script>
 </head>
 <body>
 <!-- Begin page content -->
@@ -133,18 +138,17 @@ for($i = 0; $i < count($courses); $i++) {
   </div>
 
   <?php
-  # Input values
-  echo "<b>Alkuperäinen data:</b>";
+  echo "<b>Initial infomation:</b>";
   echo "<form id='myform' method='GET' action='index.php'>";
-  echo "<table id='mytable' border cellspacing=0>";
-  echo "<tr><td>I/0</td><td>Item</td><td>OP</td><td>Time</td></tr>";
+  echo "<table id='mytable'>";
+  echo "<tr><th>I/0</th><th>Course</th><th>Credits</th><th>Time</th></tr>";
 
-  // Counter
+  // Counter reset
   $i = 0;
+  // Print courses array
   foreach($courses as $key) {
     $i++;
-    // Print  results
-    echo "<tr><td><input class='row-". $i ."' type='checkbox' checked='checked' name='enabled[]' id=''></td>
+    echo "<tr><td><input class='row-". $i ."' type='checkbox' checked='checked' name='enabled[]'></td>
             <td><input class='field row-". $i ."' name='name[]' type='text' value='".$key['name']."' /></td>
             <td><input class='field row-". $i ."' name='op[]'  type='number' value='".$key['op']."' /></td>
             <td><input class='field row-". $i ."' name='time[]' type='number' value='".$key['wload']."' />
@@ -152,35 +156,24 @@ for($i = 0; $i < count($courses); $i++) {
   }
   echo "</table>";
   echo "<span>Time limit:</span>";
-  echo "<input class='' name='limit' type='number' value='".$time."' />";
-  echo "<button id='add-row' onclick='addrow();' type='button'>Add row</button>";
-  echo "<a href='index.php'>RESET</a>";
+  echo "<input class='' name='limit[]' type='number' value='".$time."' />";
   echo "<br>";
   echo "<br>";
-  echo "<input type='submit' value='Optimoi'>";
+  echo "<input type='submit' value='Optimize'>";
+  echo "<button id='add-row' onclick='addrow();' type='button'>+ Add row +</button>";
+
+  /* Reset  handling*/
+  if(empty($resetmsg)) {
+    echo "<a class='reset' href='index.php'>Reset values</a>";
+
+  } else {
+    echo $resetmsg;
+  }
   echo "</form><hr>";
   echo '<br>';
 
-  // TODO: GET TIME params to dynamic
-
-  //If values are summitted
+  //values are submitted
   if (!empty($_GET)){
-    // TODO Import every key as array and push it to optimator function
-    echo 'Submitted values<br />';
-    foreach($_GET as $key => $value){
-      $value = implode(", ",$value);
-      //   var_dump($key);
-      echo $key . " : " . $value . "<br />\r\n";
-    }
-    echo $_GET['limit'];
-    echo '<br>';
-
-    /* ERROR handling*/
-    if(!empty($resetmsg)){
-      echo '</br>';
-      echo $resetmsg;
-      echo '</br>';
-    }
 
     # Funtion arguments
     # $w = weight of item (time)
@@ -190,33 +183,29 @@ for($i = 0; $i < count($courses); $i++) {
     # $i = index
     $i = sizeof($v4);
     # $aW = Available Weight
-    $aW = $_GET['limit'];
+    $aW = $_GET['limit'][0];
     ## Initialize $m = Memo items array
     $numcalls = 0; $m = array(); $pickedItems = array();
 
     ## Solve
     list ($m4,$pickedItems) = knapSolveFast2($w4, $v4, $i -1, $aW,$m,$pickedItems);
 
-
     if(isset($pickedItems)){
       //Correct anwser
-      echo "<b>Valitut kurssit:</b><br>";
-      echo "<table border cellspacing=0>";
-      echo "<tr><td>Kurssi</td><td>OP</td><td>Time</td></tr>";
+      echo "<b>Selected Courses:</b><br>";
+      echo "<table id='results'>";
+      echo "<tr><th>Course</th><th>Credits</th><th>Time</th></tr>";
       $totalVal = $totalWt = 0;
       foreach($pickedItems as $key) {
         $totalVal += $v4[$key];
         $totalWt += $w4[$key];
         echo "<tr><td>".$items4[$key]."</td><td>".$v4[$key]."</td><td>".$w4[$key]."</td></tr>";
       }
-      echo "<tr><td align=right><b>Yhteensä</b></td><td>$totalVal</td><td>$totalWt</td></tr>";
+      echo "<tr><td><b>Total</b></td><td>$totalVal</td><td>$totalWt</td></tr>";
       echo "</table><hr>";
     }
   }
-
   ?>
-
-</div>
 </div>
 
 <footer class="footer">
@@ -224,13 +213,6 @@ for($i = 0; $i < count($courses); $i++) {
     <p class="text-muted">My work load optimator project. Source availble at <a href="https://github.com/onnia/Workload-Optimization" target="_blank" >Github</a>.</p>
   </div>
 </footer>
-
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>-->
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="js/bootstrap.min.js"></script>
 <script src="js/custom.js"></script>
-</body>
-
 </body>
 </html>
