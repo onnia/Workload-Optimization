@@ -133,7 +133,6 @@ for($i = 0; $i < count($courses); $i++) {
     <h1>My Work load optimator</h1>
   </div>
 
-
   <p>This application is used to solve the knapsack problem and create a UI for it. The source for the function is copied from here: <a target="_blank" href="http://rosettacode.org/wiki/Knapsack_problem/0-1">http://rosettacode.org/wiki/Knapsack_problem/0-1</a></p>
   <p>I/0 Selects if you want include the row to the results array. Rest of the fields are editable.</p>
   <p>Enjoy your clicking!</p>
@@ -166,7 +165,6 @@ for($i = 0; $i < count($courses); $i++) {
   /* Reset  handling*/
   if(empty($resetmsg)) {
     echo "<a class='reset' href='index.php'>Reset values</a>";
-
   } else {
     echo $resetmsg;
   }
