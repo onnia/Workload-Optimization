@@ -107,12 +107,6 @@ if (!($_GET['enabled'][0] == NULL)) {
   /* Hide reset message */
   $resetmsg = '';
 }
-// Transform the array to list of arrays
-for($i = 0; $i < count($courses); $i++) {
-  $items4[] = $courses[$i]['name'];
-  $v4[] = $courses[$i]['op'];
-  $w4[] = $courses[$i]['wload'];
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -175,6 +169,8 @@ for($i = 0; $i < count($courses); $i++) {
   if (!empty($_GET)){
 
     # Function arguments
+    # course names
+    $items4 = $_GET['name'];
     # $w = weight of item (time)
     $w4 = $_GET['time'];
     # $v = value of item (op)
