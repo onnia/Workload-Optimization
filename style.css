@@ -4,3 +4,24 @@
 .disabled{
     background: lightgrey;
 }
+
+body {
+    font-size: 16px;
+}
+
+table, tr, td {
+    cellspacing: 0;
+    border: 1px #000000;
+}
+
+table th {
+    font-weight: bold;
+}
+
+#results {
+    width: 50%;
+}
+
+.reset {
+    float: right;
+}
